@@ -17,7 +17,7 @@ from typing import Any, Literal
 MarginStatusCode = Literal["healthy", "below_mm", "below_se"]
 # none      -> equity >= maintenance requirement
 # after_48h -> below maintenance for < 48h; liquidation possible once 48h passes
-# anytime   -> below maintenance for >= 48h; liquidation can happen at any time
+# anytime   -> below maintenance for >= 48h or for an unknown time; liquidation can happen at any time
 # immediate -> below soft edge; liquidation can happen immediately
 LiquidationRisk = Literal["none", "after_48h", "anytime", "immediate"]
 
@@ -44,7 +44,7 @@ class PriceQuote:
     price: float
     currency: str  # "SGD" | "USD" | "HKD"
     timestamp: datetime
-    source: str  # e.g. "snapshot:price_snapshot.parquet"
+    source: str  # "moomoo", "yfinance", or "snapshot:<original source>"
 
 
 @dataclass
@@ -65,14 +65,15 @@ class MarginStatus:
     as_of: datetime
     currency: str
     market_value: float
+    cash: float
     margin_loan: float
-    equity: float  # = market_value - margin_loan
+    equity: float  # = market_value + cash - margin_loan
     im_req: float
     mm_req: float
     se_req: float
     status: MarginStatusCode
     liquidation_risk: LiquidationRisk
-    hours_below_mm: float  # 0 if not below
+    hours_below_mm: float | None  # 0 if not below; None if below but the start time isn't recorded
     shortfall_to_mm: float  # 0 if not below; amount of equity needed
     shortfall_to_se: float
     soft_edge_uplift_applied: bool  # True if pre-weekend/holiday uplift is in effect
@@ -81,7 +82,7 @@ class MarginStatus:
 
 @dataclass
 class LiquidationDistance:
-    pct_drop_to_mm: float  # uniform drop across all positions; 0 if already below
+    pct_drop_to_mm: float  # uniform drop across all positions; 0 if already below, 1 if unreachable
     pct_drop_to_se: float
     stressed_market_value: float  # after shocks; current value if shocks is None
     stressed_equity: float
@@ -95,7 +96,7 @@ class WeekendRisk:
     se_ratio_raised: float
     equity: float  # after shocks, if any
     se_req_raised: float  # requirement at se_ratio_raised, after shocks, if any
-    would_breach: bool  # equity < se_req_raised
+    would_breach: bool  # is_pre_weekend and equity < se_req_raised
 
 
 # --- B: RAG ---------------------------------------------------------------

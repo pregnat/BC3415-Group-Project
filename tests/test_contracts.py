@@ -17,19 +17,20 @@ def test_account_shape():
     assert account.positions and account.currency
 
 
-@pytest.mark.parametrize("account_id", ["M-001", "M-003", "M-007"])
+@pytest.mark.parametrize("account_id", ["M-001", "M-003", "M-008"])
 def test_margin_status_shape(account_id):
     s = margin_status(account_id)
     assert isinstance(s, MarginStatus)
-    assert s.equity == s.market_value - s.margin_loan
+    assert s.equity == s.market_value + s.cash - s.margin_loan
     assert s.status in ("healthy", "below_mm", "below_se")
     assert s.liquidation_risk in ("none", "after_48h", "anytime", "immediate")
 
 
 def test_demo_scenario_accounts():
-    """S2 needs M-003 below maintenance; S3 and S5 need it to hold NVDA and TSLA."""
+    """S2 needs M-003 below maintenance and S3 needs it to hold NVDA. S5 needs a TSLA holder: M-008."""
     assert margin_status("M-003").status == "below_mm"
-    assert {"NVDA", "TSLA"} <= {p.ticker for p in get_account("M-003").positions}
+    assert "NVDA" in {p.ticker for p in get_account("M-003").positions}
+    assert "TSLA" in {p.ticker for p in get_account("M-008").positions}
 
 
 def test_price_shape():
@@ -42,7 +43,8 @@ def test_price_shape():
 def test_liquidation_distance_shape():
     d = liquidation_distance("M-003", {"NVDA": -0.08})
     assert isinstance(d, LiquidationDistance)
-    assert d.stressed_equity == d.stressed_market_value - get_account("M-003").margin_loan
+    account = get_account("M-003")
+    assert d.stressed_equity == d.stressed_market_value + account.cash - account.margin_loan
     assert d.stressed_equity < margin_status("M-003").equity
 
 

@@ -1,2 +1,5 @@
-ticker,initial_ratio,maintenance_ratio,soft_edge_ratio,source
-DEFAULT,0.40,0.30,0.20,help-centre worked example (assumption)
+ticker,initial_ratio,maintenance_ratio,soft_edge_ratio,ratio_source
+NVDA,0.4,0.3,0.2,assumption_table
+TSLA,0.5,0.35,0.25,assumption_table
+AAPL,0.4,0.3,0.2,assumption_table
+MSFT,0.4,0.3,0.2,assumption_table
