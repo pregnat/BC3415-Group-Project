@@ -1,0 +1,1 @@
+It depends on your account condition. The ultimate purpose of forced liquidation is to make your account equity remain above the maintenance margin requirement.

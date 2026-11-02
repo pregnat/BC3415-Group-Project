@@ -1,0 +1,2 @@
+Universal Account allowed to place order with different currencies. Maximum BP will aggregates of cash in different currencies.
+Note: Interest will be accrued when the margin is used.

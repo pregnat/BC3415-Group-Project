@@ -1,0 +1,10 @@
+For forex accounts, there are Initial Margin (IM) and Maintenance Margin (MM). They represent funds required to hold positions and place pending orders.
+Initial Margin (IM) which is equal to Maintenance Margin (MM): A good faith deposit required
+in the customer’s account to initiate a new position. The minimum amount of Equity Balance
+that must be maintained in the customer's account in order to hold the positions.
+A Margin Call occurs when your Equity Balance (ledger Balance +/- unrealised Profit/Losses) falls below the IM=MM level.
+When your account is on Margin Call:
+● You will be notified to top up sufficient funds to return the equity balance to the Initial Margin level.
+● The margin call notification will be made by an SMS notification and/or email registered with Moomoo SG.
+● Please ensure that your contact details are updated to avoid any miscommunication.
+While we do our best to notify you of margin calls, in the event you are not notified, Moomoo SG reserves the right to liquidate any position(s) without prior notice.

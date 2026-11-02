@@ -1,0 +1,28 @@
+1. Moomoo Financial Singapore Pte. Ltd. further breaks margin into Initial Margin, Margin Call Margin, and Maintenance Margin.
+The initial margin is the amount clients must deposit to open a futures position. Only when buying power is greater than the initial margin requirement, a futures position can be opened.
+The margin call is triggered when a client's equity with loan value (ELV) falls below the margin call margin due to market fluctuations. Moomoo Financial Singapore Pte. Ltd. will issue a margin call notice to the client, and the client must choose to either deposit more money or sell some of the assets held in the account in 48 hours. Otherwise, Moomoo Financial Singapore Pte. Ltd. reserves the right to liquidate the client's position directly without prior notice.
+The maintenance margin is the minimum amount of equity clients must maintain in their account. When a client's ELV falls below the Maintenance Margin due to market fluctuations, Moomoo Financial Singapore Pte. Ltd. reserves the right to liquidate the client's position directly without prior notice.
+2. Why is the margin requirement for equity-style close-to-expiry options increased?
+Equity-style options support physical delivery, and close-to-expiry options are options that expire within 5 trading days.
+At expiry, your position may undergo the following changes:
+1.If you long a call option, then after you exercise the option, you will open a long position in the underlying futures contract, and you will see the floating profit or loss on that position in your account.
+2.If you long a put option, then after you exercise the option, you will open a short position in the underlying futures contract, and you will see the floating profit or loss on that position in your account.
+3.If you short a call option, then after the option is assigned, you will open a short position in the underlying futures contract, and you will see the floating profit or loss on that position in your account.
+4.If you short a put option, then after the option is assigned, you will open a long position in the underlying futures contract, and you will see the floating profit or loss on that position in your account.
+Since your options may exercise or be assigned at expiry, Moomoo Financial Singapore Pte. Ltd. will begin to calculate the margin requirements that you must meet to exercise your option, which is in the money or nearly in the money, from a random time prior to market close on the expiration day. If you don't have enough funds to exercise your option, your account will be in "Margin Call" status. In this case, you can close your option position, or you can get enough funds by closing your other positions or making a deposit in your account.
+Once your account is in "Margin Call" status, Moomoo Financial Singapore Pte. Ltd. reserves the right to take relevant actions, which include but are not limited to 1) liquidating your option position, and 2) exercising the option and closing the resulting futures position.
+3. How are the funds required to exercise options calculated?
+Say you have cash of $100 and hold no position except for an equity-style option on futures contract EUU 230303 1.0525C. The price of the underlying futures contract on the expiration day is $1.0711; the floating profit or loss (or P/L) in your account is $0; the margin requirement is $0. Here is a summary:
+● Position: 1 Long EUU 230303 1.0525C
+● Cash: $100
+● Floating P&L: $0
+● ELV: Cash + Floating P&L = $100 + $0 = $100
+● Margin: $0
+By exercising the option at expiry, you close your option position, and at the same time open a futures position by buying a futures contract 6E2303 at the exercise price of $1.0525. So your account details are as follows:
+● Position: 1 Long 6E2303
+● Cash: $100, unchanged
+● Floating P&L: (current price of underlying futures - exercise price) * contract size * position quantity = ($1.0711 - $1.0525) * 125,000 * 1 = $2,325
+● ELV: Cash + Floating P&L = $100 + $2,325 = $2,425
+● Margin: The Margin Call margin requirement is changed from $0 for one option on futures contract to $2,600.24 for one futures contract.
+Since your account ELV is less than the Magin Call margin requirement, you don't have enough funds to exercise the option.
+Therefore, you need to cover the difference between your account equity and the Margin Call margin requirement, which is $2,600.24 - $2,425 = $175.24.

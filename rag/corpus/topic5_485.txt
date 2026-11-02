@@ -1,0 +1,2 @@
+a. Margin trading: If you do not have sufficient funds when buying a stock, margin will be used by default;
+b. Short selling: If you do not have a long position in a stock, you short sell it by selling it.
