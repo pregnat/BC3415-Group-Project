@@ -1,0 +1,2 @@
+No matter whether you buy or sell via your forex account, you must maintain margin. The amount of margin is calculated based on the open price of a forex contract. For all positions you hold and all pending orders you place to open a position, you always need to maintain sufficient margin.
+The margins rate for different Spot Forex contracts are set according to regulatory requirements and will vary for different classes of customers. By trading on margin, you are able to leverage on the full contract value. Margin required for Spot Forex contracts are in USD.

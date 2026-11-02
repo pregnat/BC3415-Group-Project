@@ -1,0 +1,6 @@
+Details of the margins for margin trading and short selling are available on the "Margin Trading" page.
+1. Initial Margin
+If you want to buy on margin a stock with a market value of $1 million, when the initial margin is 100%, you need $1 million to establish a position (at 1x leverage); when the initial margin is 80%, you only need $0.8 million, which means you borrow $0.2 million from moomoo SG (at 1.25x leverage).
+If you want to short sell a stock with a market value of $1 million, when the initial margin is 100%, you need to ensure that you have $1 million in your account; when the initial margin is 80%, you only need $0.8 million, which means you use your own $0.8 million as collateral to borrow the stock with a market value of $1 million from moomoo SG.
+2. Maintenance Margin
+The maintenance margin is the minimum margin you must maintain in your account if you want to keep a certain stock. Maintenance Margin Amount = Market Value of Open Positions × Maintenance Margin.

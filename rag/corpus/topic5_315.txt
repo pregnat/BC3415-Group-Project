@@ -1,0 +1,200 @@
+We support the following options strategies for margin calculation. All other strategies will be treated as single-leg positions for margin calculations. Please be aware of potential margin risks.
+1. Covered Call
+Strategy composition: Long stock and short call, where the long stock quantity equals the call contract size.
+Margin: Min(Long stock market value, Max[Short call extrinsic value × 1.1, Min(Underlying price, Short call strike) × Contract size × Long stock margin ratio])
+Buying power calculation:
+When you place an options strategy order to open a covered call, buying power used is calculated as the margin from the formula above, minus the estimated premium received, plus estimated trading fees.
+If you hold enough shares of the underlying stock and the legs can be paired as a strategy, buying power for the pending short call is frozen based on the reduced margin after combination relief.
+The in-the-money amount of the covered call is not included in the margin, but it is frozen against your account's Equity with Loan Value (ELV) and buying power.
+Note:
+If no margin relief is applied, you may not hold enough shares of the underlying stock, or you may be closing the corresponding stock position.
+Margin requirements and the required buying power may be adjusted based on market conditions without prior notice.
+When you trade highly volatile long-dated options (such as LEAPS), the "short call extrinsic value × 1.1" component may be higher than the latter component (that is, Min(underlying price, short call strike) × contract size × long stock initial margin ratio).
+2. Covered Put
+Definition: Short Stock + Short Put, and the quantity of the underlying stock is same as the contract size of the put option
+Margin Requirement: Market Value of Short Stock × Short Stock Margin Requirement + In-The-Money Amount of Short Put
+Buying Power Requirement:
+1. If you open a covered put by placing a two-leg order, the buying power required will be the margin requirement calculated using the above formula, plus the trading fees and subtracts the option premium you'll receive.
+2. If you hold enough short position of the underlying stock and then sell to open an out-of-the-money put by placing a single-leg option order, the order will also apply the margin reduction with no buying power requirement.
+3. If you hold enough short position of the underlying stock and then sell to open an in-the-money put by placing a single-leg option order, the order will apply the margin reduction and release an amount of buying power after the order submitted.
+Note:
+1. If no margin reduction is applied, it may be caused by holding insufficient short position of underlying stock or pending order of closing the short position of underlying stock.
+2. The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+3. Vertical Spread
+Definition:
+1. Vertical Call Spread: Long Call + Short Call (same underlying stock, expiration date and contract size, but different strike price)
+2. Vertical Put Spread: Long Put + Short Put (same underlying stock, expiration date and contract size, but different strike price)
+Margin Requirement:
+1. Vertical Call Spread: Max(Long Call Strike – Short Call Strike, 0) × Contract Size
+2. Vertical Put Spread: Max(Short Put Strike – Long Put Strike, 0) × Contract Size
+Buying Power Requirement:
+1. If you open a vertical spread by placing a two-leg order, the buying power required will be the margin requirement calculated using the above formula, subtracts the net premium you'll receive(or plus the net premium you'll pay), and plus the trading fees.
+2. If you hold a long position of call(put) and then sell to open a call(put) with a higher(lower) strike price, the short sell order of call(put) will also apply the margin reduction with no buying power required.
+Note:
+1. If no margin reduction is applied, it may be caused by holding insufficient long options or pending order of closing the long option position, or a different contract size.
+2. The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+4. Straddle
+Definition:
+1. Long Straddle: Long Call + Long Put (same underlying stock, expiration date, strike price and contract size)
+2. Short Straddle: Short Call + Short Put (same underlying stock, expiration date, strike price and contract size)
+Margin Requirement:
+1. Long Straddle: 0
+2. Short Straddle:
+If the short call has a higher margin requirement: Short Call Margin Requirement + Short Put Price × Contract Multiplier
+If the short put has a higher margin requirement: Short Put Margin Requirement + Short Call Price × Contract Multiplier
+Buying Power Requirement:
+1. If you open a long straddle by placing a two-leg order, the buying power required will be the trading fees plus the total premium of options.
+2. If you open a short straddle by placing a two-leg order, the buying power required will be the margin requirement calculated using the above formula, subtracts the net premium you'll receive, and plus the trading fees.
+Note:
+The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+5. Strangle
+Definition:
+1. Long Strangle: Long Call + Long Put (same underlying stock, expiration date and contract size, but the put strike price is lower than the call strike price)
+2. Short Strangle: Short Call + Short Put (same underlying stock, expiration date and contract size, but the put strike price is lower than the call strike price)
+Margin Requirement:
+1. Long Strangle: 0
+2. Short Strangle:
+If the short call has a higher margin requirement: Short Call Margin Requirement + Short Put Price × Contract Multiplier
+If the short put has a higher margin requirement: Short Put Margin Requirement + Short Call Price × Contract Multiplier
+Buying Power Requirement:
+1. If you open a long strangle by placing a two-leg order, the buying power required will be the trading fees plus the total premium of options.
+2. If you open a short strangle by placing a two-leg order, the buying power required will be the margin requirement calculated using the above formula, subtracts the net premium you'll receive, and plus the trading fees.
+Note:
+The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+6. Collar
+Definition:
+1. Long Collar: Long Stock + Long Put + Short Call (same expiration date, same underlying stock, Put Strike < Call Strike);
+2. Short Collar: Short Stock + Short Put + Long Call (same expiration date, same underlying stock, Put Strike < Call Strike);
+Margin Requirement:
+1. Long Collar: Market Value of Long Stock × Long Stock Margin Requirement + In-The-Money Amount of Short Call × (1 - Long Stock Margin Requirement)
+2. Short Collar: Market Value of Short Stock × Short Stock Margin Requirement + In-The-Money Amount of Short Put
+Buying Power Requirement:
+If you open a collar position by placing a three-leg order, the buying power required will be the margin requirement calculated using the above formula, subtracts the net premium you'll receive(or plus the net premium you'll pay), and plus the trading fees.
+Note:
+The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+7. Calendar
+Definition:
+1. Call Calendar Spread: Long Call + Short Call (same underlying stock, contract size and strike price, but different expiration date)
+2. Put Calendar Spread: Long Put + Short Put (same underlying stock, contract size and strike price, but different expiration date)
+Margin Requirement:
+1. If the short option expires after the long option:
+Call Calendar: Short Call Margin Requirement
+Put Calendar: Short Put Margin Requirement
+2. If the long option expires after the short option：
+Call Calendar: 0
+Put Calendar: 0
+Buying Power Requirement:
+1. If you open a short calendar spread by placing a two-leg order, the buying power required will be the short option margin requirement, subtracts the net premium you'll receive, and plus the trading fees.
+2. If you open a long calendar spread by placing a two-leg order, the buying power required will be the net premium you'll pay and plus the trading fees.
+3. If you hold a long position of call(put) and then sell to open a call(put) with an earlier expiration date and same strike price, the short sell order of call(put) will also apply the margin reduction with no buying power required.
+Note:
+1. If no margin reduction is applied, it may be caused by holding insufficient long options or pending order of closing the long option position, or a different contract size.
+2. The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+8. Diagonal
+Definition:
+1. Call Diagonal Spread: Long Call + Short Call (same underlying stock and contract size, but different expiration date and strike price)
+2. Put Diagonal Spread: Long Put + Short Put (same underlying stock and contract size, but different expiration date and strike price)
+Margin Requirement:
+1. If the short option expires after the long option:
+Call Diagonal: Short Call Margin Requirement
+Put Diagonal: Short Put Margin Requirement
+2. If the long option expires after the short option：
+Call Diagonal: Max(Long Call Strike – Short Call Strike, 0) × Contract Size
+Put Diagonal: Max(Short Put Strike – Long Put Strike, 0) × Contract Size
+Buying Power Requirement:
+1. If you open a diagonal spread by placing a two-leg order, the buying power required will be the margin requirement calculated using the above formula, subtracts the net premium you'll receive(or plus the net premium you'll pay), and plus the trading fees.
+2. If you hold a long position of call(put) and then sell to open a call(put) with an earlier expiration date and a higher(lower) strike price, the short sell order of call(put) will also apply the margin reduction with no buying power required.
+Note:
+1. If no margin reduction is applied, it may be caused by holding insufficient long options or pending order of closing the long option position, or a different contract size.
+2. The margin and buying power requirement are subject to adjustment by Moomoo from time to time according to market conditions.
+9. Butterfly
+Definition: Consists of 4 option contracts with 3 different strike prices.
+All contracts must have the same expiration date, underlying asset, and contract size.
+Call Butterfly
+Long Call Butterfly: Going long a call butterfly, the trader buys a call of a low strike, sells two calls of a middle strike, and buys a call of a high strike.
+Short Call Butterfly: Going short a call butterfly, the trader sells a call of a low strike, buys two calls of a middle strike, and sells a call of a high strike.
+Put Butterfly
+Long Put Butterfly: Going long a put butterfly, the trader buys a put of a low strike, sells two puts of a middle strike, and buys a put of a high strike.
+Short Put Butterfly: Going short a put butterfly, the trader sells a put of a low strike, buys two puts of a middle strike, and sells a put of a high strike.
+Margin Requirement
+Call Butterfly
+Long Call Butterfly: Max[0, (high strike - middle strike) - (middle strike - low strike)] × contract size
+Short Call Butterfly: (middle strike - low strike) × contract size
+Put Butterfly
+Long Put Butterfly: Max[0, (middle strike - low strike) - (high strike - middle strike)] × contract size
+Short Put Butterfly: (high strike - middle strike) × contract size
+Buying Power Requirement
+When opening a butterfly options position, the buying power requirement is calculated by taking the margin derived from the above formula, subtracting the expected net premium received (or adding the net premium paid), and then adding estimated trading fees.
+Notes
+If no margin reduction is applied, it may be caused by your holding insufficient long options, your operation of closing the long option position, or a different contract size.
+Margin and buying power requirements may be adjusted based on market conditions without prior notice.
+10. Condor
+Definition: Consists of 4 option contracts with 4 different strike prices. All contracts must have the same expiration date, underlying asset, and contract size.
+Call Condor
+Long Call Condor: Going long a call condor, the trader buys a call of the lowest strike, sells a call of the second lowest strike, sells a call of the second highest strike, and buys a call of the highest strike.
+Short Call Condor: Going short a call condor, the trader sells a call of the lowest strike, buys a call of the second lowest strike, buys a call of the second highest strike, and sells a call of the highest strike.
+Put Condor
+Long Put Condor: Going long a put condor, the trader buys a put of the lowest strike, sells a put of the second lowest strike, sells a put of the second highest strike, and buys a put of the highest strike.
+Short Put Condor: Going short a put condor, the trader sells a put of the lowest strike, buys a put of the second lowest strike, buys a put of the second highest strike, and sells a put of the highest strike.
+Margin Requirement
+Call Condor
+Long Call Condor: Max[0, (highest strike - second highest strike) - (second lowest strike - lowest strike)] × contract size
+Short Call Condor: (second lowest strike - lowest strike) × contract size
+Put Condor
+Long Put Condor: Max[0, (second lowest strike - lowest strike) - (highest strike - second highest strike)] × contract size
+Short Put Condor: (highest strike - second highest strike) × contract size
+Buying Power Requirement
+When opening a condor options position, the buying power requirement is calculated by taking the margin derived from the above formulas, subtracting the expected net premium received (or adding the net premium paid), and then adding estimated trading fees.
+Notes
+If no margin reduction is applied, it may be caused by your holding insufficient long options, your operation of closing the long option position, or a different contract size.
+Margin and buying power requirements may be adjusted based on market conditions without prior notice.
+11. Iron Butterfly
+Definition: Consists of 4 option contracts with 3 different strike prices. All contracts must have the same expiration date, underlying asset, and contract size.
+Long Iron Butterfly: Going long an iron butterfly, the trader sells a put of a low strike, buys a put of a middle strike, buys a call of a middle strike, and sells a call of a high strike.
+Short Iron Butterfly: Going short an iron butterfly, the trader buys a put of a low strike, sells a put of a middle strike, sells a call of a middle strike, and buys a call of a high strike.
+Margin Requirement
+Long Iron Butterfly: 0
+Short Iron Butterfly: Max[(short put strike - long put strike), (long call strike - short call strike)] × contract size
+Buying Power Requirment
+When opening an iron butterfly position, the buying power requirement is calculated by taking the margin derived from the above formula, subtracting the expected net premium received (or adding the net premium paid), and then adding estimated trading fees.
+Notes
+If no margin reduction is applied, it may be caused by your holding insufficient long options, your operation of closing the long option position, or a different contract size.
+Margin and buying power requirements may be adjusted based on market conditions without prior notice.
+12. Iron Condor
+Definition: Consists of 4 option contracts with 4 different strike prices. All contracts must have the same expiration date, underlying asset, and contract size.
+Long Iron Condor: Going long an iron condor, the trader sells a put of the lowest strike, buys a put of the second lowest strike, buys a call of the second highest strike, and sells a call of the highest strike.
+Short Iron Condor: Going short an iron condor, the trader buys a put of the lowest strike, sells a put of the second lowest strike, sells a call of the second highest strike, and buys a call of the highest strike.
+Margin Requirement
+Long Iron Condor: 0
+Short Iron Condor: Max[(short put strike - long put strike), (long call strike - short call strike)] × contract size
+Buying Power Requirement
+When opening an iron condor position, the buying power requirement is calculated by taking the margin derived from the above formula, subtracting the expected net premium received (or adding the net premium paid), and then adding estimated trading fees.
+Notes
+If no margin reduction is applied, it may be caused by your holding insufficient long options, your operation of closing the long option position, or a different contract size.
+Margin and buying power requirements may be adjusted based on market conditions without prior notice.
+13. Protective Call
+A strategy where you hold a short stock position with a long call option. The number of shorted shares must match the call option contract size.
+Initial Margin
+The standard initial margin required for the short stock position.
+Maintenance Margin
+The lower of the following:
+10% of the call strike price + the out-of-the-money (OTM) amount; or
+The standard maintenance margin for the short stock position.
+Buying Power
+When opening a position with this strategy, you'll need to pay the option premium. This premium is not included in the margin calculation.
+Please note:
+Margin Relief: If the margin requirement is not reduced as expected, please verify that you hold sufficient short shares and call options, and that there are no pending orders to close these positions.
+Market Volatility: Margin requirements and buying power are subject to change based on market conditions without prior notice.
+14. Protective Put
+A strategy where you hold a long stock position with a long put option. The number of shares held must match the put option contract size.
+Initial Margin
+The standard initial margin required for the long stock position.
+Maintenance Margin
+The lower of the following:
+10% of the put strike price + the out-of-the-money (OTM) amount; or
+The standard maintenance margin for the long stock position.
+Buying Power
+When opening a position with this strategy, you'll need to pay the option premium. This premium is not included in the margin calculation.
+Please note:
+Margin Relief: If the margin requirement is not reduced as expected, please verify that you hold sufficient shares and put options, and that there are no pending orders to close these positions.
+Market Volatility: Margin requirements and buying power are subject to change based on market conditions without prior notice.

@@ -1,0 +1,11 @@
+1. Interest Charges of MMSG Financing
+Interest Charges of MMSG Financing is 0.
+Project | Descriptions
+interest | Interest = Amount Borrowed * Daily Interest Rate * Interest-Bearing Days
+Amount borrowed | Amount Borrowed = Total Amount - Existing amount; please refer to the subscription page for specific information
+Daily interest rate | Daily Interest Rate = Annual Interest Rate/365; please refer to the subscription page for the interest rate
+Interest-bearing days | Interest-bearing days count from the subscription deadline until the last calendar day before the announcement of the allotment results.
+2. Interest charge incurred by margin financing services
+You may use margin financing services if you do not have enough withdrawable funds on your account to subscribe for IPOs.
+Interest will be settled monthly using the same interest rate as your HK margin account (typically 6.8%). You may borrow and return these funds at any time.
+We are not able to provide estimates on the interest because it will fluctuate with changes in the interest-bearing period, borrowed amount, and the financial situation of the account. Please refer to the account for final charges.
