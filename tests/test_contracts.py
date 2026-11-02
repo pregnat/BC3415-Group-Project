@@ -61,6 +61,12 @@ def test_retrieve_shape():
     assert all(c.url and c.chunk_id and c.date and c.product for c in chunks)
 
 
+def test_tool_output_has_no_float_noise():
+    output = json.loads(run_tool("margin_status", {}, "M-003"))
+    assert output["equity"] == 1137.4
+    assert output["mm_req"] == 1241.22
+
+
 def test_every_tool_dispatches():
     shocks = {"shocks": [{"ticker": "NVDA", "pct_change": -0.08}]}
     sample_args = {

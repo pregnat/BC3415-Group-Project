@@ -151,4 +151,15 @@ def _to_json(obj) -> str:
         obj = {k: asdict(v) for k, v in obj.items()}
     else:
         obj = asdict(obj)
-    return json.dumps(obj, default=str)
+    return json.dumps(_rounded(obj), default=str)
+
+
+def _rounded(obj):
+    """Drops float noise like 1137.3999999999996, so the model quotes the same number we check."""
+    if isinstance(obj, float):
+        return round(obj, 4)
+    if isinstance(obj, dict):
+        return {k: _rounded(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_rounded(v) for v in obj]
+    return obj

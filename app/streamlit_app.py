@@ -20,8 +20,8 @@ st.set_page_config(page_title="moomoo SG Margin Risk Assistant")
 st.title("Margin Risk Assistant")
 st.caption("Demo only. Margin ratios are documented assumptions, not live moomoo rates. Not investment advice.")
 
-# Healthy, below maintenance, below soft edge. All 10 are in data/accounts.csv.
-account_id = st.sidebar.selectbox("Demo account", ["M-001", "M-003", "M-008"])
+# Healthy, past the 48h clock, inside the 48h clock, below soft edge. See the README's demo table.
+account_id = st.sidebar.selectbox("Demo account", ["M-001", "M-003", "M-006", "M-008"])
 
 if st.session_state.get("account_id") != account_id:
     st.session_state.account_id = account_id

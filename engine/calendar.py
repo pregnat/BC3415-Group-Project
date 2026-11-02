@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-SOFT_EDGE_UPLIFT = 1.25  # an assumption, see docs/assumptions.md
+SOFT_EDGE_UPLIFT = 1.5  # 20% -> 30% in the help centre's Friday example, see docs/assumptions.md
 
 
 def is_pre_weekend_or_holiday(d: date) -> bool:

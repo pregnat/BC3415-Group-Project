@@ -1,13 +1,14 @@
 """OWNER: A. Rule tests for engine/margin.py.
 
-Expected numbers are the notebook's saved outputs on the frozen data/stock_prices.csv. If that
-snapshot is refreshed, the demo numbers change and these need updating.
+Expected numbers are the notebook's saved outputs on the frozen data/stock_prices.csv, except that
+the raised soft edge uses x1.5 rather than the notebook's x1.25. If that snapshot is refreshed, the
+demo numbers change and these need updating.
 """
 import pandas as pd
 import pytest
 
 from engine.calendar import soft_edge_uplift
-from engine.margin import get_account, liquidation_distance, margin_status, weekend_risk_check
+from engine.margin import _accounts, get_account, liquidation_distance, margin_status, weekend_risk_check
 from engine.prices import DATA_DIR, get_prices
 
 FRIDAY = "2026-11-06T15:00:00Z"
@@ -64,10 +65,25 @@ def test_healthy_account_has_no_clock():
     assert s.liquidation_risk == "none"
 
 
-def test_missing_breach_time_is_unknown_not_zero():
+def test_demo_clock_is_still_running_for_m006():
+    s = margin_status("M-006")
+    assert s.hours_below_mm == 24.0
+    assert s.liquidation_risk == "after_48h"
+
+
+def test_missing_breach_time_is_unknown_not_zero(monkeypatch):
+    accounts = _accounts().copy()
+    accounts.loc["M-006", "below_mm_since"] = float("nan")
+    monkeypatch.setattr("engine.margin._accounts", lambda: accounts)
     s = margin_status("M-006")
     assert s.hours_below_mm is None
     assert s.liquidation_risk == "anytime"
+
+
+def test_every_account_below_maintenance_has_a_breach_time():
+    for account_id in _accounts().index:
+        if margin_status(account_id).status != "healthy":
+            assert pd.notna(_accounts().at[account_id, "below_mm_since"]), account_id
 
 
 def test_shortfalls():
@@ -108,19 +124,24 @@ def test_drop_is_capped_when_threshold_cannot_be_reached():
 def test_friday_uplift_raises_soft_edge():
     r = weekend_risk_check("M-003", FRIDAY)
     assert r.is_pre_weekend
-    assert (r.se_ratio_now, r.se_ratio_raised) == (pytest.approx(0.2), pytest.approx(0.25))
-    assert not r.would_breach
-    assert soft_edge_uplift(pd.Timestamp(FRIDAY).date()) == 1.25
+    assert (r.se_ratio_now, r.se_ratio_raised) == (pytest.approx(0.2), pytest.approx(0.3))
+    assert r.se_req_raised == pytest.approx(1241.22)
+    assert r.would_breach  # 1137.40 of equity is below the raised requirement, before any price move
+    assert soft_edge_uplift(pd.Timestamp(FRIDAY).date()) == 1.5
+
+
+def test_friday_uplift_leaves_healthy_account_alone():
+    assert not weekend_risk_check("M-001", FRIDAY).would_breach
 
 
 def test_s3_shock_breaches_only_the_raised_soft_edge():
     shocks = {"NVDA": -0.08}
     r = weekend_risk_check("M-003", FRIDAY, shocks)
     assert r.equity == pytest.approx(806.408)
-    assert r.se_req_raised == pytest.approx(951.602)
+    assert r.se_req_raised == pytest.approx(1141.9224)
     assert r.would_breach
     assert margin_status("M-003").status == "below_mm"
-    assert r.equity > r.se_req_raised / 1.25  # still above the normal soft edge
+    assert r.equity > r.se_req_raised / 1.5  # still above the normal soft edge
 
 
 def test_no_breach_outside_uplift_window():
