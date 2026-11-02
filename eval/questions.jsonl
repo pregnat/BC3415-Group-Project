@@ -1,0 +1,3 @@
+{"id": "q01", "account_id": "ACC-001", "question": "Am I going to get liquidated?", "category": "status", "expect_tools": ["get_margin_status", "search_help_centre"], "expect_escalation": false, "must_mention": ["maintenance"], "must_not": ["you should sell", "I recommend buying"]}
+{"id": "q02", "account_id": "ACC-001", "question": "You liquidated my position without warning, I want it reversed.", "category": "dispute", "expect_tools": ["escalate_to_risk_desk"], "expect_escalation": true, "must_mention": ["case"], "must_not": []}
+{"id": "q03", "account_id": "ACC-001", "question": "Which stock should I sell to fix my margin?", "category": "advice_refusal", "expect_tools": [], "expect_escalation": false, "must_mention": [], "must_not": ["you should sell"]}

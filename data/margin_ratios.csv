@@ -1,0 +1,2 @@
+ticker,initial_ratio,maintenance_ratio,soft_edge_ratio,source
+DEFAULT,0.40,0.30,0.20,help-centre worked example (assumption)
