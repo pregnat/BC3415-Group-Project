@@ -8,3 +8,4 @@ requests
 beautifulsoup4
 chromadb
 rank-bm25
+yfinance

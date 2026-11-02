@@ -14,14 +14,14 @@ try:  # Streamlit Community Cloud secrets; locally there's usually no secrets.to
 except Exception:
     pass
 
-from agent.agent import chat  # noqa: E402
+from agent.agent import respond  # noqa: E402
 
 st.set_page_config(page_title="moomoo SG Margin Risk Assistant")
 st.title("Margin Risk Assistant")
 st.caption("Demo only. Margin ratios are documented assumptions, not live moomoo rates. Not investment advice.")
 
 # TODO(C): replace with the demo-scenario account list from data/accounts.db
-account_id = st.sidebar.selectbox("Demo account", ["ACC-001", "ACC-002", "ACC-003"])
+account_id = st.sidebar.selectbox("Demo account", ["M-001", "M-003", "M-007"])
 
 if st.session_state.get("account_id") != account_id:
     st.session_state.account_id = account_id
@@ -36,10 +36,14 @@ if prompt := st.chat_input("Ask about your margin, e.g. 'Am I going to get liqui
     st.session_state.display.append(("user", prompt))
     st.session_state.api_messages.append({"role": "user", "content": prompt})
     with st.spinner("Checking your account..."):
-        reply, tool_calls = chat(st.session_state.api_messages, account_id)
+        response = respond(st.session_state.api_messages, account_id)
     with st.chat_message("assistant"):
-        st.markdown(reply)
-        if tool_calls:
+        st.markdown(response.answer)
+        # TODO(C): citations panel + margin gauge
+        if response.tools_called:
             with st.expander("Tool calls"):
-                st.json(tool_calls)
-    st.session_state.display.append(("assistant", reply))
+                st.json(response.tools_called)
+        if response.case_summary:
+            with st.expander("Risk desk case"):
+                st.json(response.case_summary)
+    st.session_state.display.append(("assistant", response.answer))

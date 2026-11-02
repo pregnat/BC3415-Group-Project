@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime
 
 from contracts import EscalationCase, EscalationReason
-from engine.margin import compute_margin_status
+from engine.margin import margin_status
 
 CASES: dict[str, EscalationCase] = {}  # TODO(C): persist (sqlite table in accounts.db?)
 
@@ -15,6 +15,8 @@ def create_case(
     reason: EscalationReason,
     customer_message: str,
     summary: str,
+    timeline: list[str] | None = None,
+    rule_cited: str = "",
     cited_chunk_ids: list[str] | None = None,
 ) -> EscalationCase:
     case = EscalationCase(
@@ -23,7 +25,9 @@ def create_case(
         reason=reason,
         customer_message=customer_message,
         summary=summary,
-        margin_snapshot=compute_margin_status(account_id),
+        timeline=timeline or [],
+        rule_cited=rule_cited,
+        margin_snapshot=margin_status(account_id),
         cited_chunk_ids=cited_chunk_ids or [],
         created_at=datetime.now(),
     )
