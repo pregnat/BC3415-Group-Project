@@ -16,7 +16,9 @@ except Exception:
     pass
 
 from agent.agent import respond  # noqa: E402
-from contracts import AgentResponse  # noqa: E402
+from agent.escalation import list_cases  # noqa: E402
+from contracts import AgentResponse, MarginStatus  # noqa: E402
+from engine.margin import margin_status  # noqa: E402
 
 st.set_page_config(page_title="moomoo SG Margin Risk Assistant")
 st.title("Margin Risk Assistant")
@@ -31,6 +33,39 @@ ACCOUNTS = {
 }
 account_id = st.sidebar.selectbox("Demo account", list(ACCOUNTS), format_func=lambda a: f"{a} · {ACCOUNTS[a]}")
 show_trace = st.sidebar.toggle("Show how the agent answered", value=True)
+
+STATUS_LABELS = {"healthy": "Healthy", "below_mm": "Below maintenance", "below_se": "Below soft edge"}
+
+
+def render_gauge(status: MarginStatus) -> None:
+    """Equity against the maintenance requirement, straight from the engine (no API call)."""
+    st.sidebar.subheader("Margin gauge")
+    coverage = status.equity / status.mm_req if status.mm_req else 1.0
+    st.sidebar.progress(
+        min(max(coverage, 0.0), 1.0),
+        text=f"{STATUS_LABELS[status.status]} · equity is {coverage:.0%} of maintenance",
+    )
+    left, right = st.sidebar.columns(2)
+    left.metric("Equity", f"{status.equity:,.2f}")
+    right.metric("Maintenance", f"{status.mm_req:,.2f}")
+    left.metric("Soft edge", f"{status.se_req:,.2f}")
+    if status.hours_below_mm:
+        right.metric("Hours below", f"{status.hours_below_mm:,.0f}")
+    st.sidebar.caption(f"{status.currency} at {status.as_of:%a %d %b %H:%M} UTC, on the frozen price snapshot.")
+
+
+def render_cases(account_id: str) -> None:
+    cases = list_cases(account_id)
+    with st.sidebar.expander(f"Risk desk cases ({len(cases)})"):
+        if not cases:
+            st.caption("No cases for this account.")
+        for case in cases:
+            st.markdown(f"**{case['case_id']}** · {case['reason']} · {case['created_at'][:16]}")
+            st.caption(case["summary"])
+
+
+render_gauge(margin_status(account_id))
+render_cases(account_id)
 
 if st.session_state.get("account_id") != account_id:
     st.session_state.account_id = account_id
