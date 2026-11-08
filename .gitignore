@@ -7,3 +7,5 @@ __pycache__/
 .DS_Store
 eval/results/*.jsonl
 rag/index/
+.ipynb_checkpoints/
+notebooks/data_margin_engine/margin_functions.py

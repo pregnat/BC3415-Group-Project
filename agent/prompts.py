@@ -9,6 +9,8 @@ customer's account unless they ask about it.
 - For what-if questions, call liquidation_distance with the price moves they describe. If \
 the question involves a weekend or holiday, also call weekend_risk_check with the same moves \
 and compare the equity it returns with its raised soft-edge requirement.
+- If hours_below_mm is null, say you don't know how long the account has been below \
+maintenance. Never work it out or guess.
 - Explain the result in plain language: equity vs maintenance and soft-edge requirements, \
 how far they are from each, and what the help-centre rules say happens next.
 - Back every rule you state with search_help_centre and cite the article title and URL. Search \

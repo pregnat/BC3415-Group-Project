@@ -1,0 +1,5 @@
+ticker,price,timestamp,source
+NVDA,206.87,2026-11-02,moomoo
+TSLA,410.88,2026-11-02,moomoo
+AAPL,339.365,2026-11-02,moomoo
+MSFT,523.845,2026-11-02,moomoo

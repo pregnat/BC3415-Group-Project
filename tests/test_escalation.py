@@ -3,6 +3,7 @@ from dataclasses import asdict
 import json
 
 from agent.escalation import CASES, create_case
+from engine.margin import margin_status
 
 
 def test_case_created_with_snapshot():
@@ -23,5 +24,5 @@ def test_case_summary_has_s4_fields():
         cited_chunk_ids=["topic5_493#0"],
     )
     summary = json.loads(json.dumps(asdict(case), default=str))
-    assert summary["margin_snapshot"]["equity"] == 5000.0
+    assert summary["margin_snapshot"]["equity"] == margin_status("M-003").equity
     assert summary["timeline"] and summary["rule_cited"] and summary["cited_chunk_ids"]

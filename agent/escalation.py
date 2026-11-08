@@ -7,7 +7,7 @@ from datetime import datetime
 from contracts import EscalationCase, EscalationReason
 from engine.margin import margin_status
 
-CASES: dict[str, EscalationCase] = {}  # TODO(C): persist (sqlite table in accounts.db?)
+CASES: dict[str, EscalationCase] = {}  # TODO(C): persist
 
 
 def create_case(
