@@ -76,6 +76,8 @@ class MarginStatus:
     hours_below_mm: float | None  # 0 if not below; None if below but the start time isn't recorded
     shortfall_to_mm: float  # 0 if not below; amount of equity needed
     shortfall_to_se: float
+    excess_over_mm: float  # 0 if below; how much equity can fall before reaching maintenance
+    excess_over_se: float  # 0 if below; how much equity can fall before reaching soft edge
     soft_edge_uplift_applied: bool  # True if pre-weekend/holiday uplift is in effect
     positions: list[PositionMargin] = field(default_factory=list)
 
@@ -96,6 +98,8 @@ class WeekendRisk:
     se_ratio_raised: float
     equity: float  # after shocks, if any
     se_req_raised: float  # requirement at se_ratio_raised, after shocks, if any
+    shortfall_to_se_raised: float  # 0 if not below; equity needed to meet se_req_raised
+    excess_over_se_raised: float  # 0 if below; how far equity is above se_req_raised
     would_breach: bool  # is_pre_weekend and equity < se_req_raised
 
 

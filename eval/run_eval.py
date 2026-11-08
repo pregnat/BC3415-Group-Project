@@ -11,6 +11,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from agent.agent import respond
 from contracts import AgentResponse
 
@@ -58,12 +60,13 @@ def _source_values(response: AgentResponse, question: str) -> list[float]:
 
 def unfaithful_numbers(response: AgentResponse, question: str) -> list[str]:
     """Numbers in the answer that no tool output or the question supports, at the precision the
-    answer used ("1,137" matches 1137.4). Plain whole numbers up to 100 ("48 hours", "2 days",
-    "6 Nov") and years are skipped: they are rule text and dates, not account figures."""
+    answer used ("1,137" matches 1137.4). Whole numbers up to 100, with or without % ("48 hours",
+    "6 Nov", "if NVDA falls 10%") and years are skipped: they are rule text, dates and examples.
+    Account figures have decimals or exceed 100, so they are still checked, as are "9.36%" drops."""
     sources = _source_values(response, question)
     bad = []
     for value, decimals, is_percent, written in _numbers(response.answer):
-        is_small_int = decimals == 0 and not is_percent and "$" not in written and abs(value) <= 100
+        is_small_int = decimals == 0 and "$" not in written and abs(value) <= 100
         if is_small_int or (decimals == 0 and 1900 <= value <= 2100):
             continue
         if not any(round(s, decimals) == round(value, decimals) for s in sources):
@@ -126,4 +129,5 @@ def main(ids: list[str]):
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main(sys.argv[1:])
