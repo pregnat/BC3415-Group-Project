@@ -120,6 +120,8 @@ def margin_status(account_id: str, now: datetime | str | None = None) -> MarginS
         hours_below_mm=hours_below_mm,
         shortfall_to_mm=max(0.0, mm_req - equity),
         shortfall_to_se=max(0.0, se_req - equity),
+        excess_over_mm=max(0.0, equity - mm_req),
+        excess_over_se=max(0.0, equity - se_req),
         soft_edge_uplift_applied=False,  # the raised soft edge is only modelled in weekend_risk_check
         positions=[
             PositionMargin(
@@ -176,5 +178,7 @@ def weekend_risk_check(
         se_ratio_raised=se_req_raised / market_value,
         equity=equity,
         se_req_raised=se_req_raised,
+        shortfall_to_se_raised=max(0.0, se_req_raised - equity),
+        excess_over_se_raised=max(0.0, equity - se_req_raised),
         would_breach=is_pre_weekend and equity < se_req_raised,
     )

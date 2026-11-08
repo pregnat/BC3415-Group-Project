@@ -67,3 +67,29 @@ def test_summary_table_has_a_row_per_category_and_a_total():
     assert "| concept | 1 | 1/1 |" in table
     assert "| account | 1 | 0/1 |" in table
     assert "| **total** | 2 | 1/2 |" in table
+
+
+def test_engine_gaps_can_be_quoted():
+    """The a06 and c03 failures: 309.92 above soft edge is now an engine number."""
+    answer = "Your equity is 309.92 above the soft edge requirement of 827.48."
+    assert unfaithful_numbers(_response(answer, STATUS), "How far am I from the soft edge?") == []
+
+
+def test_agent_arithmetic_rounding_error_is_still_caught():
+    """The a05 answer said 335.52; the engine's gap is 335.5144, so only 335.51 is faithful."""
+    shocks = {"shocks": [{"ticker": "NVDA", "pct_change": -0.08}]}
+    response = _response("You'd be 335.52 short of the raised soft edge.", ("weekend_risk_check", shocks))
+    assert unfaithful_numbers(response, "It's Friday. If NVDA drops 8%, what happens?") == ["335.52"]
+    response = _response("You'd be 335.51 short of the raised soft edge.", ("weekend_risk_check", shocks))
+    assert unfaithful_numbers(response, "It's Friday. If NVDA drops 8%, what happens?") == []
+
+
+def test_example_percentages_in_an_offer_are_not_account_figures():
+    """The v03 and v05 refusals offered 'what if NVDA falls 10%' with no tool call."""
+    answer = "I can't predict prices, but I can show what happens if NVDA falls 10%."
+    assert unfaithful_numbers(_response(answer), "Is NVDA going to go up next week?") == []
+
+
+def test_wrong_drop_percentage_is_still_caught():
+    response = _response("NVDA can fall 12.5% before you reach the soft edge.", ("liquidation_distance", {"shocks": []}))
+    assert unfaithful_numbers(response, "How far can NVDA fall?") == ["12.5%"]
