@@ -106,26 +106,35 @@ def summarize(rows: list[dict]) -> str:
 
 
 def main(ids: list[str]):
+    """Each answer is saved as soon as it arrives, so a crash (e.g. no API credit) keeps the
+    answers so far and still prints their summary."""
     questions = [json.loads(l) for l in (ROOT / "questions.jsonl").read_text().splitlines() if l.strip()]
     if ids:
         questions = [q for q in questions if q["id"] in ids]
-    rows = []
-    for q in questions:
-        response = respond([{"role": "user", "content": q["question"]}], q["account_id"])
-        rows.append({
-            "id": q["id"],
-            "category": q["category"],
-            "reply": response.answer,
-            "tools_called": [c["name"] for c in response.tools_called],
-            **score(q, response),
-        })
-        failed = [c for c in CHECKS if not rows[-1][c]]
-        print(f"{q['id']}: {'PASS' if rows[-1]['pass'] else 'FAIL ' + ', '.join(failed)}")
     stamp = f"{datetime.now():%Y%m%d-%H%M%S}"
-    (ROOT / "results" / f"{stamp}.jsonl").write_text("\n".join(json.dumps(r) for r in rows))
-    table = summarize(rows)
-    (ROOT / "results" / f"{stamp}.md").write_text(table + "\n")
-    print(table)
+    rows = []
+    try:
+        with (ROOT / "results" / f"{stamp}.jsonl").open("w") as out:
+            for q in questions:
+                response = respond([{"role": "user", "content": q["question"]}], q["account_id"])
+                rows.append({
+                    "id": q["id"],
+                    "category": q["category"],
+                    "reply": response.answer,
+                    "tools_called": [c["name"] for c in response.tools_called],
+                    **score(q, response),
+                })
+                out.write(json.dumps(rows[-1]) + "\n")
+                out.flush()
+                failed = [c for c in CHECKS if not rows[-1][c]]
+                print(f"{q['id']}: {'PASS' if rows[-1]['pass'] else 'FAIL ' + ', '.join(failed)}")
+    finally:
+        if rows:
+            table = summarize(rows)
+            if len(rows) < len(questions):
+                table += f"\n\nStopped after {len(rows)} of {len(questions)} questions."
+            (ROOT / "results" / f"{stamp}.md").write_text(table + "\n")
+            print(table)
 
 
 if __name__ == "__main__":
