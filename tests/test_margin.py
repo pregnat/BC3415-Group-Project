@@ -205,3 +205,14 @@ def test_live_mode_prefers_moomoo_over_yfinance(monkeypatch):
     quotes = get_prices(["NVDA", "TSLA"], mode="live")
     assert (quotes["NVDA"].price, quotes["NVDA"].source) == (210.0, "moomoo")
     assert quotes["TSLA"].source == "snapshot:moomoo"
+
+
+def test_gaps_are_computed_by_the_engine():
+    """The agent must not subtract numbers itself, so every gap it may quote comes from here."""
+    s = margin_status("M-003")
+    assert s.excess_over_se == pytest.approx(1137.4 - 827.48)
+    assert (s.excess_over_mm, s.shortfall_to_se) == (0.0, 0.0)
+    r = weekend_risk_check("M-003", FRIDAY, {"NVDA": -0.08})
+    assert r.shortfall_to_se_raised == pytest.approx(1141.9224 - 806.408)
+    assert r.excess_over_se_raised == 0.0
+    assert weekend_risk_check("M-001", FRIDAY).shortfall_to_se_raised == 0.0

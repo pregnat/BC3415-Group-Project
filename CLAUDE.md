@@ -10,9 +10,12 @@ with an internal target of 18:00. The README covers setup, layout, owners and th
 ```bash
 python3.11 -m venv .venv && source .venv/bin/activate   # 3.11: chromadb is untested on the default 3.13
 pip install -r requirements.txt
-pytest                          # 75 tests, all offline; no API key needed
+pytest                          # 109 tests, all offline; no API key needed
 streamlit run app/streamlit_app.py
 python -m eval.run_eval         # calls the Claude API: costs money, ask first
+python -m eval.run_eval c01 a05 # only these question ids
+python -m engine.price_checks   # price data-quality checks on the snapshot
+python -m rag.scrape --local-only  # re-extract files saved into rag/sources/
 ```
 
 ## Team and ownership
@@ -52,17 +55,22 @@ in the PR description.
   - Drop distances are capped at 100%.
   - An unknown breach clock reports `anytime`.
 
-## Status (as of 3 Nov 2026)
+## Status (as of 6 Nov 2026)
 
 - PRs are stacked, and each needs review before it is merged:
   - #2 `rag-foundations` targets `main`.
   - #3 `contracts-match-plan` targets #2.
   - #4 `data-margin-engine` targets #3.
+  - `agent-app` (Caleb) has no PR yet; #5 `eval-harness` targets it.
+  - `finish-code` targets #5: calendar, price checks, saved cases, margin gauge, numeric check,
+    local-source ingest.
 - Still to do:
-  - A: holiday calendar, `next_market_open`, price data-quality checks
-  - B: 30-question eval set, numeric-faithfulness check
-  - C: citations panel, margin gauge, deployment
-- The Streamlit app has not been launched, and no live Claude call has been made.
+  - Everyone: the first live Claude run of S1-S5, then the full eval (`python -m eval.run_eval`).
+  - A: run `python -m engine.price_checks --live` and add the yfinance result to `docs/data_quality.md`.
+  - B: save the 20-F, MAS and MoneySense files into `rag/sources/` by hand (the sites refuse
+    automated downloads); eval results table; architecture diagram.
+  - C: deploy to Streamlit Community Cloud.
+- `next_market_open` is implemented and tested but no tool calls it yet.
 
 ## Git on this machine
 
