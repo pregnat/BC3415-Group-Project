@@ -6,4 +6,5 @@ pyarrow
 pytest
 requests
 beautifulsoup4
-# B: add your embedding/vector-store library here (e.g. chromadb, sentence-transformers, or rank-bm25)
+chromadb
+rank-bm25

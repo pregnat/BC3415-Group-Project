@@ -1,0 +1,57 @@
+1. What is Intraday Leverage Plus
+Intraday trading is a strategy where traders open and close positions within the same trading day.
+Intraday Leverage Plus is a feature designed specifically for day traders. With higher leverage, it allows you to control larger positions while investing only a small portion of your capital.
+2. How to Apply
+You are eligible to apply for Intraday Leverage Plus if you meet the following criteria at the time of the application:
+Member Level: V3 or above.
+Account Activity: You have maintained a minimum account opening tenure of at least 3 months.
+Credit Record: Your trading activity during the past year (from the date you registered your interest) complies with the platform's risk control requirements.
+Employment Record: You are not classified as a Student, Unemployed individual, Homemaker, or Retiree based on our records. If your employment status has changed, please update your information to be reassessed for eligibility.
+Application Process: If you meet the eligibility requirements, simply click here to submit your application: Apply for Intraday Leverage Plus. The review process usually takes 3–5 business days. Once your application is approved, your account will be updated automatically. You will be notified via in-app message and email, and the applicable margin requirements and related parameters will be reflected in your account.
+3. Supported Markets and Products
+Market | Supported Types
+US Stocks | Margin Trading
+Note: Moomoo SG is continuously expanding its coverage to more markets and product categories. When new markets or products become available, users with existing access will automatically be granted access. No additional application is needed.
+4. Trading Hours for Intraday Leverage Plus（Singapore Time）
+Market | Time Period | Regular Trading Hours | Before Weekends/Holidays
+US Stocks | Daylight Saving Time (Mar–Nov) | 21:45 – 03:30 | 21:45 – 03:00 (Ends 30 mins early)
+Standard Time (Nov–Mar) | 22:45 – 04:30 | 22:45 – 04:00 (Ends 30 mins early)
+5. Intraday and Overnight Margin Ratios
+After enabling Intraday Leverage Plus, you'll see two sets of margin ratios on the stock quotes page for eligible stocks:
+Intraday Ratio: Applicable only during intraday trading. This ratio typically offers higher leverage, allowing you to trade with less capital.
+Overnight Ratio: The standard margin required during non-intraday sessions.
+6. How Intraday and Overnight Margins Are Calculated
+After enabling Intraday Leverage Plus, you'll see both intraday and overnight margin ratios for Initial Margin, Maintenance Margin, and Excess Liquidity. This helps you manage your current trading capacity and overnight risk.
+Intraday Margin
+Meaning: Dynamically calculated based on the current time. It uses the lower Intraday Margin Requirement during intraday hours and the Overnight Margin Requirement during non-intraday hours.
+Function: Reflects whether your account is currently at risk or if you can open new positions.
+Overnight Margin
+Meaning: A reference value that's always calculated using the Overnight Margin Requirement, regardless of the current time.
+Function: This is an alert reference. It reflects your account's risk status without the Intraday Leverage Plus benefit. It helps you assess the feasibility of holding positions overnight in advance, avoiding liquidity issues or risk control triggers due to insufficient funds for overnight requirements.
+Example Scenario
+Let's say you own Stock A worth $10,000. The stock has:
+An Intraday Maintenance Margin Ratio of 25%
+An Overnight Maintenance Margin Ratio of 30%
+Time Period | Intraday Maintenance Margin (Dynamic Calculation) | Overnight Maintenance Margin (Fixed Calculation) | What You Need to Know
+Intraday Hours e.g., 21:45–03:30 | 2,500 USD (Intraday margin ratio is 25%) | 3,000 USD (Overnight margin ratio is always 30% ) | You're using Intraday Leverage Your current capital requirement is lower, but keep an eye on the overnight margin requirement. Make sure your ELV is above $3,000 before the intraday trading hours end.
+Non-Intraday Hours e.g., 03:30–04:00 | 3,000 USD (Intraday ends, leverage reverts) | 3,000 USD (Remains unchanged) | After Intraday Session Ends Leverage reverts, and the margin requirement is now $3,000. If your account balance falls below this, you may trigger risk controls.
+7. How Intraday Leverage Plus Affects Buying Power
+When using Intraday Leverage Plus, the system applies the Intraday Initial Margin Requirement to calculate your maximum buying power. Typically, your maximum buy/sell quantity is higher during intraday hours than overnight, depending on two key factors:
+Key Factors
+Order Stock (Stock You Wish to Trade): Whether the stock you are about to trade is within intraday hours and supports Intraday Leverage Plus.
+Holding Stock (Stocks You Already Hold): Whether the stocks in your portfolio are within intraday hours and support Intraday Leverage Plus.
+How It Works
+If either of the above conditions is met, your buying power calculation changes as follows:
+Order Stock qualifies: The margin required for the trade is reduced, allowing you to buy more shares of that stock.
+Holding Stock qualifies: The margin required for your existing positions is reduced, freeing up additional available funds (buying power), which increases your buy/sell quantity for all eligible stocks.
+Note: If neither condition is met, the margin requirements for intraday and overnight remain the same, and you do not receive any Intraday Leverage Plus advantage.
+Example Scenarios
+Scenario Type | Operation & Target | Can You Buy More?
+1. Ordering an Intraday Leverage Plus Stock | Operation: Buy Stock A with cash. Symbol: Stock A supports Intraday Leverage Plus. | Yes, margin is reduced. Because the stock you are buying qualifies for Intraday Leverage Plus, the margin required for this trade is lower, directly increasing your buying power.
+2. Holding an Intraday Leverage Plus Stock | Operation: Hold Stock A and buy Stock B. Symbol: Stock A supports Intraday Leverage Plus; Stock B does not. | Yes, more funds are available. Although Stock B does not qualify, the margin required for your held Stock A is reduced during intraday hours, freeing up additional funds to buy more of Stock B.
+3. Neither Holding nor Ordering Supports Intraday Leverage Plus | Operation: Buy Stock C. Symbol: Neither the held nor ordered stocks support Intraday Leverage Plus. | No, remains the same. Margin requirements are the same for both intraday and overnight; there is no leverage advantage.
+8. What Happens When the Intraday Session Ends?
+To ensure you can safely hold positions overnight, we recommend checking whether your ELV meet the overnight requirements before the intraday session ends. The system will also send alerts if an overnight risk is detected.
+Once the intraday session ends, the system immediately uses the Overnight Margin Requirement for risk control calculations:
+If Funds are Sufficient: Your positions will be retained overnight as normal. No action is needed.
+If Funds are Insufficient: This means your account does not meet the Overnight Requirement. The risk control system will operate, any unfilled orders may be automatically cancelled, and your positions may be force-liquidated to cover the shortfall.

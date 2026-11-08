@@ -1,0 +1,38 @@
+1. When your account equity remains below the maintenance margin requirement for more than 48 hours;
+2. When your account equity falls below the soft edge margin requirement;
+3. When your account equity may fall below the maintenance margin or the soft edge margin after you exercise or assign your options near expiration;
+Soft edge margin: The threshold below which actual forced liquidation will occur. When your equity falls below the soft edge margin requirement, forced liquidation may occur immediately. Typically, under moomoo SG's absolute discretion, a soft edge margin is raised on the day before a weekend or holiday, and lowered on the first trading day after the market is closed or after a weekend.
+Example: Suppose a stock has an initial margin ratio of 40%, a maintenance margin ratio of 30%, and a soft edge margin ratio which is lowered to 20% after the market opens on Monday and raised to 30% before the market closes on Friday, and you hold $4,000 in cash. Here are a few scenarios:
+1) You buy the stock on margin, and your equity just meets the initial margin requirement. Your position is as follows:
+Item | Amount
+Total market value | 10,000
+Initial margin requirement | 10,000*40% =4,000
+Maintenance margin requirement | 10,000*30% =3,000
+Soft edge margin requirement | 10,000*20% =2,000
+Margin loan | 6,000
+Equity | 4,000
+2) When the market value drops to $8,500, your equity falls below the maintenance margin requirement. Now you need to consider the variation of the soft edge margin:
+● If it is not yet near the close on a Friday afternoon: The soft edge margin ratio of the stock is usually 20%, and your equity falls below the maintenance margin but remains above the soft edge margin. If your equity remains below the maintenance margin for more than 48 hours, you will be at risk of forced liquidation at any time. Your position is as follows:
+Item | Amount
+Total market value | 8,500
+Initial margin requirement | 8,500*40% = 3400
+Maintenance margin requirement | 8,500*30% = 2550
+Soft edge margin requirement | 8,500*20% = 1700
+Margin loan | 6,000
+Equity | 2,500
+● If it is near the close on a Friday afternoon: The soft edge margin will be raised to 30%, and your position will undergo forced liquidation since your equity does not meet the soft edge margin requirement. Your position is as follows:
+Item | Amount
+Total market value | 8,500
+Initial margin requirement | 8,500*40% = 3400
+Maintenance margin requirement | 8,500*30% = 2550
+Soft edge margin requirement | 8,500*30% = 2550
+Margin loan | 6,000
+Equity | 2,500
+3) When the market value drops to $7,000, no matter whether it is near the close on a Friday afternoon or not, your equity falls below the soft edge margin requirement, and your position will be at risk of forced liquidation at any time. Your position is as follows:
+Item | Amount
+Total market value | 7,000
+Initial margin requirement | 7,000*40%=2800
+Maintenance margin requirement | 7,000*30%=2100
+Soft edge margin requirement | 7,000*20%=1400
+Margin loan | 6,000
+Equity | 1,000

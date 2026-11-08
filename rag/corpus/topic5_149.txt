@@ -1,0 +1,2 @@
+Whether you buy or sell a futures contract, a margin must be deposited into your account before opening a futures position on a futures contract. The amount of the margin will be adjusted based on market fluctuations.
+Before opening a futures position, clients must have sufficient buying power in their account to meet the margin requirement.

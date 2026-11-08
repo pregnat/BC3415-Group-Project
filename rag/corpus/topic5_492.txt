@@ -1,0 +1,1 @@
+The risks in your account are disclosed on the account page and the account risk details page in your app. The account risk details page contains detailed descriptions of account risks, disposal suggestions, and early warning information on fluctuations of individual stocks held.

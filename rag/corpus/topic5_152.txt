@@ -1,0 +1,9 @@
+When a client has a portfolio composed of multiple futures contracts, the overall margin requirement will be reduced.
+Currently, Moomoo Financial Singapore Pte. Ltd. requires the highest margin among your futures contracts as the overall portfolio margin.
+If your portfolio contains options contracts, the margin requirement for the portfolio will be the highest margin requirement among the constituent contracts, as well as an intra-commodity spread charge.
+portfolios | futures+futures | futures+options on futures | options on futures+options on futures
+examples | -6E2201 1 (margin 100,000) -6E2202 -1 (margin 110,000) | -6E2203 1 (margin 40,000) -EUU220225C8300000 -1 (margin 30,000) | -EUU220225C8300000 1 (margin 30,000) -EUU220225P8600000 -1 (margin 20,000)
+margin for portfolios | 110,000 | 50,000 | 40,000
+Notes:
+If your entire portfolio consists of long positions in futures-style options contracts , the upper limit of the margin requirement will be the value of these long positions.
+If your entire portfolio consists of long positions in equity-style options contracts (such as CME Gold options contracts), you will be exempt from margin requirements (but we will deduct the option premium from your cash).

@@ -1,0 +1,5 @@
+When trading on margin, forced liquidation may occur if your Equity with Loan Value (ELV) falls below the maintenance margin requirement.
+You can mark positions you want to keep longest as "Liquidate Last." These could be long-term holdings or positions you expect to profit from. During forced liquidation, we'll prioritize closing other positions first.
+Note:
+"Liquidate Last" is a preference, not a guarantee. If necessary, the company reserves the right to liquidate any positions at its discretion based on your account's risk level.
+This setting doesn't apply when liquidation is triggered by Option Exercise Simulation.

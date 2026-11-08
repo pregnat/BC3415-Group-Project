@@ -1,0 +1,7 @@
+Moomoo SG reserves the right to liquidate your positions without prior notice under below scenarios:
+When your Net Assets falls below Initial Margin level, the margin call persists and no action taken by the end of day 2.
+When your Net Assets falls below the stipulated force‐liquidation margin level (also known as the Close-Out Level), which is 50% of the Initial Margin level.
+While liquidation is carried out on a best-efforts basis, it is dependent on prevailing market conditions and market prices.
+*Margin level is derived from Net Assets/Initial Margin x 100%
+*LFX Margin call is based on end of day (EOD) margin call report, there is no real time accumulation.
+*Due to the risks associated with margin/leveraged trading, Moomoo SG reserves the right to amend the stop loss threshold in accordance to the risk profile of the account.
