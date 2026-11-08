@@ -9,3 +9,4 @@ beautifulsoup4
 chromadb
 rank-bm25
 yfinance
+pysqlite3-binary; sys_platform == "linux"
