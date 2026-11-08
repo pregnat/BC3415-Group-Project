@@ -1,13 +1,20 @@
-"""Price lookup from data/price_snapshot.parquet. OWNER: A."""
+"""Price lookup: frozen snapshot, moomoo OpenAPI live mode, yfinance fallback. OWNER: A."""
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Literal
 
 from contracts import PriceQuote
 
+DEMO_NOW = datetime(2026, 11, 6, 15, 0)  # Friday before the close; the snapshot's clock
 
-def get_price(ticker: str, as_of: datetime | None = None) -> PriceQuote:
-    # TODO(A): read from data/price_snapshot.parquet; raise KeyError for unknown tickers.
-    fake = {"D05.SI": (38.0, "SGD"), "NVDA": (120.0, "USD")}
-    price, ccy = fake.get(ticker, (10.0, "SGD"))
-    return PriceQuote(ticker, price, ccy, as_of or datetime(2026, 11, 6, 15, 0), "stub")
+_STUB_PRICES = {"NVDA": (120.0, "USD"), "TSLA": (200.0, "USD")}
+
+
+def get_prices(tickers: list[str], mode: Literal["snapshot", "live"] = "snapshot") -> dict[str, PriceQuote]:
+    # TODO(A): read from data/price_snapshot.parquet; add live mode with the yfinance fallback.
+    quotes = {}
+    for ticker in tickers:
+        price, currency = _STUB_PRICES[ticker]  # KeyError for unknown tickers: keep this in the real code
+        quotes[ticker] = PriceQuote(ticker, price, currency, DEMO_NOW, "stub")
+    return quotes

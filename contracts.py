@@ -1,4 +1,5 @@
-"""Shared data shapes between layers. FROZEN once the team signs off.
+"""Shared data shapes between layers, matching section 3 of the project plan.
+FROZEN once the team signs off.
 
 Changing a field here breaks someone else's code: open a PR, tag both
 other teammates, and update tests/test_contracts.py in the same PR.
@@ -9,11 +10,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 # --- A: engine ------------------------------------------------------------
 
-MarginStatusCode = Literal["OK", "BELOW_MAINTENANCE", "BELOW_SOFT_EDGE"]
+MarginStatusCode = Literal["healthy", "below_mm", "below_se"]
 # none      -> equity >= maintenance requirement
 # after_48h -> below maintenance for < 48h; liquidation possible once 48h passes
 # anytime   -> below maintenance for >= 48h; liquidation can happen at any time
@@ -22,11 +23,27 @@ LiquidationRisk = Literal["none", "after_48h", "anytime", "immediate"]
 
 
 @dataclass
+class Position:
+    ticker: str
+    qty: float
+    avg_cost: float
+
+
+@dataclass
+class Account:
+    account_id: str  # "M-001" ... "M-010"
+    currency: str  # one currency per account; mixed USD/SGD is a stretch goal
+    cash: float
+    margin_loan: float
+    positions: list[Position] = field(default_factory=list)
+
+
+@dataclass
 class PriceQuote:
     ticker: str
     price: float
     currency: str  # "SGD" | "USD" | "HKD"
-    as_of: datetime
+    timestamp: datetime
     source: str  # e.g. "snapshot:price_snapshot.parquet"
 
 
@@ -50,16 +67,35 @@ class MarginStatus:
     market_value: float
     margin_loan: float
     equity: float  # = market_value - margin_loan
-    initial_requirement: float
-    maintenance_requirement: float
-    soft_edge_requirement: float
+    im_req: float
+    mm_req: float
+    se_req: float
     status: MarginStatusCode
     liquidation_risk: LiquidationRisk
-    hours_below_maintenance: float  # 0 if not below
-    shortfall_to_maintenance: float  # 0 if not below; amount of equity needed
-    shortfall_to_soft_edge: float
+    hours_below_mm: float  # 0 if not below
+    shortfall_to_mm: float  # 0 if not below; amount of equity needed
+    shortfall_to_se: float
     soft_edge_uplift_applied: bool  # True if pre-weekend/holiday uplift is in effect
     positions: list[PositionMargin] = field(default_factory=list)
+
+
+@dataclass
+class LiquidationDistance:
+    pct_drop_to_mm: float  # uniform drop across all positions; 0 if already below
+    pct_drop_to_se: float
+    stressed_market_value: float  # after shocks; current value if shocks is None
+    stressed_equity: float
+    binding_position: str  # ticker with the largest stressed market value
+
+
+@dataclass
+class WeekendRisk:
+    is_pre_weekend: bool
+    se_ratio_now: float
+    se_ratio_raised: float
+    equity: float  # after shocks, if any
+    se_req_raised: float  # requirement at se_ratio_raised, after shocks, if any
+    would_breach: bool  # equity < se_req_raised
 
 
 # --- B: RAG ---------------------------------------------------------------
@@ -67,14 +103,16 @@ class MarginStatus:
 
 @dataclass
 class Chunk:
-    chunk_id: str  # stable, e.g. "margin-call-faq#3"
+    chunk_id: str  # stable, e.g. "topic5_493#0"
     text: str
     title: str  # help-centre article title
     url: str  # canonical moomoo SG help-centre URL, used for citations
-    score: float  # higher = more relevant
+    date: str  # ISO date we fetched it; help-centre pages show no publish date
+    product: str  # "securities_margin" | "forex_cfd" | "futures" | "options" | ...
+    score: float  # cosine similarity, higher = more relevant
 
 
-# --- C: escalation --------------------------------------------------------
+# --- C: agent + escalation ------------------------------------------------
 
 EscalationReason = Literal["liquidation_dispute", "extension_request", "other"]
 
@@ -86,6 +124,17 @@ class EscalationCase:
     reason: EscalationReason
     customer_message: str
     summary: str  # structured summary written by the agent for the risk desk
+    timeline: list[str]  # what happened and when, as far as the customer has said
+    rule_cited: str  # the help-centre rule the case turns on
     margin_snapshot: MarginStatus | None
     cited_chunk_ids: list[str]
     created_at: datetime
+
+
+@dataclass
+class AgentResponse:
+    answer: str
+    citations: list[dict[str, str]]  # [{"chunk_id", "title", "url"}] cited in the answer
+    tools_called: list[dict[str, Any]]  # [{"name", "input", "output", "is_error"}]
+    escalate: bool
+    case_summary: dict[str, Any] | None  # the EscalationCase as JSON if escalate is True
