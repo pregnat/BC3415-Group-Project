@@ -1,0 +1,4 @@
+# Streamlit's default primary colour is red, which made the margin gauge look like a warning even
+# for healthy accounts. Blue is neutral; the gauge's text label states the status.
+[theme]
+primaryColor = "#1E88E5"
