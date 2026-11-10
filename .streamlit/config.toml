@@ -1,3 +1,13 @@
+[theme]
+base = "dark"
+primaryColor = "#ff7a1a"
+backgroundColor = "#0b1020"
+secondaryBackgroundColor = "#172238"
+textColor = "#e8ecf4"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
 # Streamlit's default primary colour is red, which made the margin gauge look like a warning even
 # for healthy accounts. Blue is neutral; status is shown by the badge and the gauge's label.
 # Colours are set per mode so the app still follows the viewer's light or dark setting.
