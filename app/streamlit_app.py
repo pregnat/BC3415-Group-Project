@@ -1,7 +1,8 @@
-"""Streamlit chat UI: chat on the left, live account canvas on the right. OWNER: C.
-Run: streamlit run app/streamlit_app.py
+"""Streamlit entry point. OWNER: C.  Run: streamlit run app/streamlit_app.py
+
+Sets up the environment, then routes to the two pages: the customer assistant (app/assistant.py)
+and the human risk desk (app/risk_desk.py).
 """
-import html
 import os
 import sys
 from pathlib import Path
@@ -344,3 +345,9 @@ with right:
                  + (f' · latest {html.escape(cases[0]["case_id"])} ({html.escape(cases[0]["reason"].replace("_", " "))})' if cases else "")
                  + "</div>")
     st.markdown(f'<div class="card"><h4>Source citations</h4>{sources}{case_html}</div>', unsafe_allow_html=True)
+st.set_page_config(page_title="Margin Risk Assistant", page_icon=":material/shield:", layout="centered")
+APP_DIR = Path(__file__).parent
+st.navigation([
+    st.Page(APP_DIR / "assistant.py", title="Assistant", icon=":material/forum:", default=True),
+    st.Page(APP_DIR / "risk_desk.py", title="Risk desk", icon=":material/support_agent:"),
+]).run()

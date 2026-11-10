@@ -50,6 +50,21 @@ Numbers are at the default demo clock (Fri 6 Nov 2026, 15:00 UTC) on the frozen 
 | S4 | M-003 | Escalation with a margin snapshot. |
 | S5 | M-008 | Holds TSLA, which M-003 doesn't. Below soft edge, so the risk is `immediate`. |
 
+## App features
+
+| Feature | Where | What it answers in the brief |
+|---|---|---|
+| Chat agent with tool calls, citations and a tool trace | Main page | LLM agent, RAG with sources, transparency |
+| Escalation with a structured case (snapshot, timeline, rule cited) | Chat, sidebar, **Risk desk** page | Escalate complex cases to humans with summarized histories |
+| **Talk to a human** button | Sidebar | A fallback that doesn't depend on the model deciding to escalate |
+| Number check on every answer | Under each answer | Hallucinations: flags any figure not in the engine's output |
+| Margin gauge, with price age | Sidebar | Communicating the analytics outcome; data quality (prices are a 2 Nov snapshot) |
+| What-if price sliders | Sidebar | Explore scenarios without the chatbot, straight from the engine |
+| Weekend alert | Top of the page | Proactive warning when a raised pre-weekend soft edge would cause a breach |
+| Risk desk page | Second page | The human agent's queue of escalated cases |
+
+Everything except the chat runs from the engine, so it works without an API call.
+
 ## Architecture
 
 ```mermaid
