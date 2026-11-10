@@ -69,10 +69,10 @@ header[data-testid="stHeader"] { background: transparent; }
 div[data-testid="stColumn"]:has(.pane-chat), div[data-testid="stColumn"]:has(.pane-canvas) {
   background: rgba(18, 26, 46, .72); border: 1px solid #222d48; border-radius: 18px; padding: 18px 20px; }
 .hdr { display: flex; align-items: center; gap: 14px; }
-.avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg,#ff7a1a,#ffb067);
+.avatar { width: 38px; height: 38px; flex: none; border-radius: 50%; background: linear-gradient(135deg,#ff7a1a,#ffb067);
   display: flex; align-items: center; justify-content: center; font-weight: 700; color: #1a1205; font-size: 17px; }
 .hdr h2 { margin: 0; font-size: 21px; font-weight: 700; color: #f2f4f8; }
-.pill { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 3px 10px; border-radius: 999px;
+.pill { display: inline-flex; align-items: center; gap: 6px; margin-top: 0; padding: 3px 10px; border-radius: 999px;
   font-size: 12px; font-weight: 600; background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.35); }
 .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
 .title { font-size: 21px; font-weight: 700; color: #f2f4f8; margin: 0 0 2px; }
@@ -104,6 +104,9 @@ div[data-testid="stColumn"]:has(.pane-chat), div[data-testid="stColumn"]:has(.pa
 .muted { color: #8e9ab3; font-size: 12.5px; }
 .foot { color: #6f7a94; font-size: 11.5px; margin-top: 6px; }
 div[data-testid="stChatMessage"] { background: transparent; }
+.st-key-chatbox, div:has(> .st-key-chatbox) { height: calc(100vh - 322px) !important; max-height: none !important; min-height: 420px; flex: 0 0 auto !important; }
+.st-key-quick button { padding: 2px 10px; min-height: 34px; font-size: 13px; border-radius: 999px; }
+.foot { margin-top: 2px; }
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
@@ -153,7 +156,7 @@ with left:
         )
     with head:
         st.markdown(
-            f"""<div class="hdr"><div class="avatar">MR</div><div><h2>Margin Risk Assistant</h2>
+            f"""<div class="hdr"><div class="avatar">MR</div><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><h2>Margin Risk Assistant</h2>
             <span class="pill"><span class="dot"></span>Demo account {account_id} connected</span></div></div>""",
             unsafe_allow_html=True,
         )
@@ -182,7 +185,7 @@ with left:
                     st.markdown(f"`{call['name']}` · {'error' if call['is_error'] else 'ok'}")
                     st.json({"input": call["input"], "output": call["output"]}, expanded=False)
 
-    chat = st.container(height=500, border=False)
+    chat = st.container(height=500, border=False, key="chatbox")
     with chat:
         if not st.session_state.turns:
             st.markdown(
@@ -195,6 +198,11 @@ with left:
                 if response is not None:
                     render_extras(response, snapshot)
 
+    if st.session_state.turns:
+        with st.container(key="quick"):
+            cols = st.columns(len(QUICK_ACTIONS), gap="small")
+            for col, (label, text) in zip(cols, QUICK_ACTIONS):
+                col.button(label, on_click=_queue, args=(text,), use_container_width=True)
     prompt = st.chat_input("Ask about your margin, e.g. 'Am I going to get liquidated?'")
     prompt = prompt or st.session_state.pop("pending", None)
     if prompt:
@@ -217,12 +225,8 @@ with left:
         st.session_state.turns.append(("assistant", response.answer, response, snap))
         st.rerun()
 
-    if st.session_state.turns:
-        cols = st.columns(len(QUICK_ACTIONS))
-        for col, (label, text) in zip(cols, QUICK_ACTIONS):
-            col.button(label, on_click=_queue, args=(text,), use_container_width=True)
-    st.markdown(f'<div class="foot">🔒 {account_id} · demo data: mock accounts, saved price snapshot, '
-                'assumed margin ratios · not investment advice · not affiliated with moomoo</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="foot">🔒 {account_id} · demo data · saved price snapshot · assumed margin ratios · '
+                'not investment advice · not affiliated with moomoo</div>', unsafe_allow_html=True)
 
 
 # ---------- canvas ----------
