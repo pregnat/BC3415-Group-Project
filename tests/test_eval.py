@@ -93,3 +93,30 @@ def test_example_percentages_in_an_offer_are_not_account_figures():
 def test_wrong_drop_percentage_is_still_caught():
     response = _response("NVDA can fall 12.5% before you reach the soft edge.", ("liquidation_distance", {"shocks": []}))
     assert unfaithful_numbers(response, "How far can NVDA fall?") == ["12.5%"]
+
+
+def test_a_crash_keeps_the_answers_so_far(tmp_path, monkeypatch):
+    import eval.run_eval as run_eval
+
+    calls = []
+
+    def fake_respond(history, account_id):
+        calls.append(account_id)
+        if len(calls) == 3:
+            raise RuntimeError("credit balance is too low")
+        return AgentResponse("I can't give advice.", [], [], False, None)
+
+    (tmp_path / "results").mkdir()
+    monkeypatch.setattr(run_eval, "ROOT", tmp_path)
+    (tmp_path / "questions.jsonl").write_text("\n".join(json.dumps({
+        "id": f"v0{i}", "account_id": "M-001", "question": "Should I buy?", "category": "advice_refusal",
+        "expect_tools": [], "expect_escalation": False, "must_mention": [], "must_not": ["I recommend"],
+    }) for i in range(1, 5)))
+    monkeypatch.setattr(run_eval, "respond", fake_respond)
+    try:
+        run_eval.main([])
+    except RuntimeError:
+        pass
+    saved = [json.loads(l) for l in next(tmp_path.glob("results/*.jsonl")).read_text().splitlines()]
+    assert [r["id"] for r in saved] == ["v01", "v02"]
+    assert "Stopped after 2 of 4 questions." in next(tmp_path.glob("results/*.md")).read_text()
