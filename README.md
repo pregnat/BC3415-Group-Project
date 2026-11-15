@@ -5,19 +5,33 @@ It prices positions, compares equity against the maintenance and soft-edge requi
 help-centre rules, and escalates disputes and extension requests to a human risk desk. It never
 gives buy/sell advice.
 
-## Setup
+Student group project for BC3415 (NTU). Not affiliated with or endorsed by moomoo; the accounts
+are synthetic and the margin ratios are the help centre's worked examples.
+
+**Live demo:** deployed on Streamlit Community Cloud from the `agent-app` branch.
+
+## Run locally
+
+Needs Python 3.11 or newer.
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
+python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env        # add your ANTHROPIC_API_KEY
-pytest                      # contract tests must stay green
-streamlit run app/streamlit_app.py
-python -m eval.run_eval     # calls the API: costs money (add question ids to run a few)
+cp .env.example .env        # then put your ANTHROPIC_API_KEY in .env
+streamlit run app/streamlit_app.py      # opens http://localhost:8501
 ```
 
-Use `python3.11` or newer, and activate `.venv` before running anything (`(.venv)` should show in
-your prompt; Anaconda's `(base)` doesn't have the packages).
+- **No API key?** The app still opens: the account canvas, weekend alert, what-if sliders, "Talk
+  to a human" and the Risk desk all run from the engine. Only the chat needs the key.
+- The help-centre search index is built from `rag/corpus/` the first time it is needed (once;
+  it is saved to `rag/index/`). Nothing else needs downloading.
+- Activate `.venv` before running anything (`(.venv)` should show in your prompt; Anaconda's
+  `(base)` doesn't have the packages).
+
+```bash
+pytest                      # 122 tests, all offline, no API key needed
+python -m eval.run_eval     # calls the API: costs money (add question ids to run a few)
+```
 
 ## Layout and owners
 
@@ -54,14 +68,14 @@ Numbers are at the default demo clock (Fri 6 Nov 2026, 15:00 UTC) on the frozen 
 
 | Feature | Where | What it answers in the brief |
 |---|---|---|
-| Chat agent with tool calls, citations and a tool trace | Main page | LLM agent, RAG with sources, transparency |
-| Escalation with a structured case (snapshot, timeline, rule cited) | Chat, sidebar, **Risk desk** page | Escalate complex cases to humans with summarized histories |
-| **Talk to a human** button | Sidebar | A fallback that doesn't depend on the model deciding to escalate |
+| Chat agent with tool calls, citations and a tool trace | Assistant page, left | LLM agent, RAG with sources, transparency |
+| Escalation with a structured case (snapshot, timeline, rule cited) | Chat, **Risk desk** page | Escalate complex cases to humans with summarized histories |
+| **Talk to a human** button | Quick actions above the chat box | A fallback that doesn't depend on the model deciding to escalate |
 | Number check on every answer | Under each answer | Hallucinations: flags any figure not in the engine's output |
-| Margin gauge, with price age | Sidebar | Communicating the analytics outcome; data quality (prices are a 2 Nov snapshot) |
-| What-if price sliders | Sidebar | Explore scenarios without the chatbot, straight from the engine |
-| Weekend alert | Top of the page | Proactive warning when a raised pre-weekend soft edge would cause a breach |
-| Risk desk page | Second page | The human agent's queue of escalated cases |
+| Account canvas: margin zones, snapshot, gauge, price age | Assistant page, right | Communicating the analytics outcome; data quality (prices are a 2 Nov snapshot) |
+| What-if price sliders | Account canvas | Explore scenarios without the chatbot, straight from the engine |
+| Weekend alert | Top of the account canvas | Proactive warning when a raised pre-weekend soft edge would cause a breach |
+| Risk desk page | **Risk desk** in the top menu | The human agent's queue of escalated cases |
 
 Everything except the chat runs from the engine, so it works without an API call.
 
@@ -93,6 +107,10 @@ advice requests. `python -m eval.run_eval` runs them through the agent and write
 question passes only if the agent used the expected tools, escalated when it should, mentioned the
 required words, avoided forbidden ones, cited the expected page, and every number in its answer
 appears in a tool output or the question.
+
+Results: 23/30 on the first run, then 119/120 across four runs after moving the agent's arithmetic
+into the engine. The write-up is `docs/eval_results.md`; every answer, scored check by check, is in
+`eval/results/runs/`.
 
 ## Deployment (Streamlit Community Cloud)
 
